@@ -1,30 +1,80 @@
-# 🛡️ Phishing Email Analyzer
+# Phishing Email Analyzer — ML Email Classification
 
-A machine learning project that detects phishing emails with **98% accuracy** using Python, TF-IDF, and Logistic Regression — trained on 82,000+ real emails.
+Built by Astha Patel | M.S. Information Technology, Arizona State University
 
-## 📊 Results
-- ✅ Model Accuracy: **98.04%**
-- ✅ Trained on: **65,988 emails**
-- ✅ Tested on: **16,498 emails**
-- ✅ Precision & Recall: **0.98 for both classes**
+---
 
-## 📈 Visualizations
+## Why I Built This
 
-### Email Distribution
-![Email Distribution](email_distribution.png)
+Email is still the most common attack vector in cybersecurity. Most phishing classifiers I found online used small curated datasets that do not reflect the real variety of phishing attempts in the wild. I wanted to build something on a large real dataset and understand what actually distinguishes a phishing email from a legitimate one at the text level.
 
-### Model Performance — Confusion Matrix
-![Confusion Matrix](confusion_matrix.png)
+---
 
-### Accuracy Report
-![Accuracy Report](accuracy_report.png)
+## What It Does
 
-## 🔍 How It Works
-1. Loads 82,000+ real phishing and legitimate emails
-2. Cleans and preprocesses the text data
-3. Converts email text to numerical features using TF-IDF Vectorization
-4. Trains a Logistic Regression classifier
-5. Evaluates performance using accuracy, precision, recall and F1-score
-6. Detects new emails in real time with confidence scores
+The analyzer takes an email's text content and classifies it as phishing or legitimate. It uses TF-IDF vectorization to convert raw email text into numerical features, then applies a Logistic Regression classifier trained on 82,000 plus real emails. A live detection mode lets you paste any email text and get a classification with a confidence score immediately.
 
-## 🧪 Live Detection Example
+---
+
+## The Data
+
+82,486 real emails total. 65,988 used for training and 16,498 used for testing. A mix of verified phishing emails and legitimate emails from public datasets.
+
+82,000 emails is meaningful scale. It means the model has seen enough variation in how phishing emails are written — from urgent bank alerts to password reset scams to prize notifications — that it generalizes well beyond simple keyword matching.
+
+---
+
+## Results
+
+| Metric | Value |
+|---|---|
+| Accuracy | 98.04% |
+| Precision | 0.98 |
+| Recall | 0.98 |
+| F1 Score | 0.98 |
+
+Consistent precision and recall means the model is not just getting lucky on the majority class. It is genuinely distinguishing phishing from legitimate email.
+
+---
+
+## How It Works
+
+Raw email text is cleaned and lowercased first. TF-IDF vectorization then converts the cleaned text into numerical feature vectors — words that appear frequently in phishing emails but rarely in legitimate ones get high weights, while generic words get low weights. A Logistic Regression classifier uses those vectors to make predictions. The model outputs a probability score, not just a binary label, so a 0.97 phishing probability gets treated differently from a 0.61.
+
+---
+
+## Tech Stack
+
+Python 3, scikit-learn, pandas, NumPy, matplotlib, seaborn
+
+---
+
+## How to Run It
+
+```bash
+git clone https://github.com/astha2310/phishing-email-analyzer.git
+cd phishing-email-analyzer
+
+pip3 install scikit-learn pandas numpy matplotlib seaborn
+
+python3 phishing_analyzer.py
+python3 detect.py
+```
+
+---
+
+## What I Learned
+
+The most interesting discovery was how specific the vocabulary of phishing emails is. Words like "verify," "urgent," "suspended," and "click" appear at dramatically higher rates in phishing emails. But the model also picks up subtler signals like unusual capitalization and the absence of personal context you would expect in a real email.
+
+I also learned that recall matters more than precision for a security use case. A missed phishing email is more dangerous than flagging a legitimate one. Tuning the classification threshold to favor recall over precision is the right operational choice here.
+
+---
+
+## What Could Be Added Next
+
+Header analysis covering SPF, DKIM, and DMARC validation to catch spoofed sender domains, URL extraction and scanning within email bodies, real-time Gmail integration to classify incoming emails automatically, and a browser extension that flags suspicious emails in webmail clients.
+
+---
+
+Astha Patel | github.com/astha2310 | linkedin.com/in/asthap23
